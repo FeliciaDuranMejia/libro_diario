@@ -1,0 +1,83 @@
+<?page title="CRUD" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<style src="/widgets/grid/inline_row_editing/style.css" />
+	<window title="Usuarios" border="normal"	
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vmUsuario') @init('mx.com.felicia.libro_diario.controllers.UsuarioVM')">
+		
+		<menubar>
+			<menuitem label="Usuarios" href="/usuarios.zul"></menuitem>
+		</menubar>
+		
+		<vbox spacing="15px">
+			<button
+				onClick="@command('showOrHiddeAddUser', selection = 1)"
+				disabled="@load((vmUsuario.addUsuario or !vmUsuario.toUpdate))">
+				New User
+			</button>
+			<hbox
+				visible="@load(vmUsuario.addUsuario)">
+				<textbox placeholder="Nombre Completo"
+					value="@bind(vmUsuario.currentUsuarios.nombreCompleto)">
+				</textbox>
+				<textbox placeholder="Usuario"
+					value="@bind(vmUsuario.currentUsuarios.usuario)">
+				</textbox>
+				<textbox placeholder="Contraseña"
+					value="@bind(vmUsuario.currentUsuarios.contrasena)">
+				</textbox>
+
+				<button onClick="@command('insertAndSave')">
+					Save
+				</button>
+				<button
+					onClick="@command('showOrHiddeAddUser', selection = 2)">
+					Cancel
+				</button>
+			</hbox>
+
+			<listbox
+				model="@load(vmUsuario.listAux)"
+				rows="10">
+				<listhead>
+					<listheader label="NOMBRE" />
+					<listheader label="USUARIO" />
+					<listheader label="CONTRA" />
+					<listheader label="ACCION" />
+				</listhead>
+				<template>
+					<listitem>
+						<listcell label="@load(each.usuario.nombreCompleto)">
+							<textbox value="@bind(each.usuario.nombreCompleto)" visible="@load(each.status)" />
+						</listcell>
+						<listcell label="@load(each.usuario.usuario)">
+							<textbox value="@bind(each.usuario.usuario)" visible="@load(each.status)" />
+						</listcell>
+						<listcell label="@load(each.usuario.contrasena)">
+							<textbox value="@bind(each.usuario.contrasena)" visible="@load(each.status)" />
+						</listcell>
+						<listcell >
+							<button
+								onClick="@command('changeEditableStatus', usuarioStatus=each)"
+								style="background-color: blue" iconSclass="z-icon-pencil" />
+							<button
+								onClick="@command('delete', each = each.usuario)"
+								style="background-color: red" iconSclass="z-icon-eraser" />
+						</listcell>
+						<listcell visible="@load(each.status)" >
+							<button iconSclass="z-icon-save"
+								style="background-color: green"
+								onClick="@command('confirm', usuarioStatus=each)"
+								visible="@load(each.status)" />
+							<button iconSclass="z-icon-times"
+								disabled="@load(each.status eq 'edit')"
+								style="background-color: blue"
+								onClick="@command('changeEditableStatus', usuarioStatus=each)"
+								visible="@load(each.status)" />
+						</listcell>
+					</listitem>
+				</template>
+			</listbox>
+		</vbox>
+	</window>
+</zk>
