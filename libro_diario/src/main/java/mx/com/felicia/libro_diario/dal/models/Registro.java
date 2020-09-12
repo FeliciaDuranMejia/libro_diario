@@ -27,7 +27,7 @@ public class Registro implements Serializable {
 	//bi-directional many-to-one association to Empresa
 	@ManyToOne
 	@JoinColumn(name="id_empresa")
-	private Empresa empresa;
+	private Empresas empresa;
 
 	//bi-directional many-to-one association to Operacion
 	@ManyToOne
@@ -66,11 +66,11 @@ public class Registro implements Serializable {
 		this.monto = monto;
 	}
 
-	public Empresa getEmpresa() {
+	public Empresas getEmpresa() {
 		return this.empresa;
 	}
 
-	public void setEmpresa(Empresa empresa) {
+	public void setEmpresa(Empresas empresa) {
 		this.empresa = empresa;
 	}
 

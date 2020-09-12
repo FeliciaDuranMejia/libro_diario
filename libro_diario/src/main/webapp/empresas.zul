@@ -1,0 +1,25 @@
+<?page title="Empresas" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<include src="/index.zul"></include>
+	
+	<window title="Empresas" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('mx.com.felicia.libro_diario.controllers.EmpresasVM')">
+		
+		<listbox model="@bind(vm.todoList)"
+			selectedItem="@bind(vm.selectedEmpresa)" vflex="1">
+			<listhead>
+				<listheader />
+				<listheader />
+				<listheader hflex="min" />
+			</listhead>
+			<template name="model">
+				<listitem>
+					<listcell label="@load(each.nombreEmpresa)" />
+					<listcell label="@load(each.telefono)" />
+				</listitem>
+			</template>
+		</listbox>
+		
+	</window>
+</zk>

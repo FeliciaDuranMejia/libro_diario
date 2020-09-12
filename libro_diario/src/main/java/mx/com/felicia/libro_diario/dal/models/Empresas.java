@@ -2,33 +2,30 @@ package mx.com.felicia.libro_diario.dal.models;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
-
 
 /**
  * The persistent class for the empresas database table.
  * 
  */
 @Entity
-@Table(name="empresas")
-@NamedQuery(name="Empresa.findAll", query="SELECT e FROM Empresa e")
-public class Empresa implements Serializable {
+@NamedQuery(name="Empresas.findAll", query="SELECT e FROM Empresas e")
+public class Empresas implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name="id_empresa")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idEmpresa;
 
-	private String nombreEmpresa = "";
+	@Column(name="nombre_empresa")
+	private String nombreEmpresa;
 
-	private String telefono = "";
+	@Column(name="telefono")
+	private String telefono;
 
-	public Empresa() {
+	public Empresas() {
 	}
-	
-	public boolean getIsNew() {
-		return idEmpresa == 0;
-	}
-	
+
 	public int getIdEmpresa() {
 		return this.idEmpresa;
 	}
