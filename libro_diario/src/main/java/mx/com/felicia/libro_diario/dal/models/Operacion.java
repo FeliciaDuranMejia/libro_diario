@@ -27,6 +27,7 @@ public class Operacion implements Serializable {
 	private List<Registro> registros;
 
 	public Operacion() {
+		/** CONSTRUCTOR POR DEFECTO **/
 	}
 
 	public int getIdOperacion() {

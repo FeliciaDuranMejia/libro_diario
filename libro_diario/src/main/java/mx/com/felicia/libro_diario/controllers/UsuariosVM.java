@@ -17,21 +17,19 @@ import org.zkoss.zul.Messagebox.ClickEvent;
 
 import mx.com.felicia.libro_diario.dal.models.Usuarios;
 import mx.com.felicia.libro_diario.dal.repositories.UsuariosRepository;
-import mx.com.felicia.libro_diario.controllers.UsuarioStatus;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class UsuariosVM {
-
+	/** Declaracion de variables **/
 	@WireVariable
 	private UsuariosRepository usuariosRepository;
+	
 	@Wire
 	private List<Usuarios> listUsuario = new ArrayList<>();
 	@Wire
 	private List<UsuarioStatus> listAux = new ArrayList<>();
 	@Wire
 	private boolean addUsuario = false;
-	@Wire
-	private boolean toUpdate = true;
 	@Wire
 	private Usuarios currentUsuarios;
 	@Wire
@@ -58,7 +56,7 @@ public class UsuariosVM {
 	@NotifyChange({ "currentUsuarios", "addUsuario", "listAux", "listUsuario", "usuarioStatus" })
 	@Command
 	public void insertAndSave() {
-		if (validateInsert()) {
+		if (validateInsert(currentUsuarios)) {
 			usuariosRepository.save(currentUsuarios);
 			currentUsuarios = new Usuarios();
 			usuarioStatus = new UsuarioStatus(null, false);
@@ -96,15 +94,17 @@ public class UsuariosVM {
 	@Command
 	public void changeEditableStatus(@BindingParam("usuarioStatus") UsuarioStatus usuarioStatus) {
 		usuarioStatus.setStatus(!usuarioStatus.getStatus());
-		//refreshRowTemplate(usuarioStatus);
 	}
 	
 	@NotifyChange({ "listAux", "listUsuario", "usuarioStatus" })
 	@Command
 	public void confirm(@BindingParam("usuarioStatus") UsuarioStatus usuarioStatus) {
-		usuariosRepository.save(usuarioStatus.getUsuario());
-		changeEditableStatus(usuarioStatus);
-		//refreshRowTemplate(usuarioStatus);
+		if (validateInsert(usuarioStatus.getUsuario())) {
+			usuariosRepository.save(usuarioStatus.getUsuario());
+			changeEditableStatus(usuarioStatus);
+		} else {
+			Messagebox.show("No se permiten campos vacios");
+		}
 	}
 
 	@NotifyChange({ "listAux" })
@@ -113,23 +113,21 @@ public class UsuariosVM {
 		listAux.set(listAux.indexOf(usuarioStatus), usuarioStatus);
 	}
 
-	public boolean validateInsert() {
-		if (!currentUsuarios.getNombreCompleto().isEmpty() && !currentUsuarios.getContrasena().isEmpty()
-				&& !currentUsuarios.getUsuario().isEmpty()) {
-			return true;
-		}
-		return false;
+	public boolean validateInsert(Usuarios userToValidate) {
+		return (!(userToValidate.getNombreCompleto() == null || userToValidate.getNombreCompleto().isEmpty())
+				&& !(userToValidate.getContrasena() == null || userToValidate.getContrasena().isEmpty())
+				&& !(userToValidate.getUsuario() == null || userToValidate.getUsuario().isEmpty())); 
 	}
 	
 	private static List<UsuarioStatus> generateStatusList(List<Usuarios> usuarios ){
-		List<UsuarioStatus> listAux = new ArrayList<UsuarioStatus>();		///////////
+		List<UsuarioStatus> listAux = new ArrayList<>();
 		for (Usuarios user : usuarios) {
 			listAux.add(new UsuarioStatus(user, false));
 		}
 		return listAux;
 	}
 
-	////////// SETTERS & GETTERS ///////////
+	/** Getters & Setters **/
 	public List<Usuarios> getListUsuario() {
 		listUsuario = usuariosRepository.findAll();
 		return listUsuario;
@@ -168,15 +166,6 @@ public class UsuariosVM {
 		this.addUsuario = addUsuario;
 	}
 	
-	public boolean isToUpdate() {
-		return toUpdate;
-	}
-
-	@NotifyChange({ "listAux", "toUpdate", "listUsuario" })
-	public void setToUpdate(boolean toUpdate) {
-		this.toUpdate = toUpdate;
-	}
-
 	public Usuarios getCurrentUsuarios() {
 		return currentUsuarios;
 	}

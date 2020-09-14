@@ -1,0 +1,103 @@
+<?page title="Usuarios" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<include src="/index.zul"></include>
+	
+	<window title="Usuarios" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('mx.com.felicia.libro_diario.controllers.UsuariosVM')">
+		
+		<button onClick="@command('showOrHiddeAddUser', selection = 1)"
+			disabled="@load((vm.addUsuario or vm.usuarioStatus.status))">
+			New User
+		</button>
+		<hbox visible="@load(vm.addUsuario)">
+			<textbox placeholder="Nombre Completo"
+				value="@bind(vm.currentUsuarios.nombreCompleto)">
+			</textbox>
+			<textbox placeholder="Usuario"
+				value="@bind(vm.currentUsuarios.usuario)">
+			</textbox>
+			<textbox placeholder="Contraseña"
+				value="@bind(vm.currentUsuarios.contrasena)">
+			</textbox>
+
+			<button onClick="@command('insertAndSave')">Save</button>
+			<button
+				onClick="@command('showOrHiddeAddUser', selection = 2)">
+				Cancel
+			</button>
+		</hbox>
+		
+		<listbox model="@load(vm.listAux)" 
+			selectedItem="@bind(vm.usuarioStatus)" rows="5">
+			<listhead>
+				<listheader label="Nombre" align="center" />
+				<listheader label="Usuario" align="center" />
+				<listheader label="Contraseña" align="center" style="" />
+				<listheader />
+			</listhead>
+			<template name="model">
+				<listitem disabled="@load(vm.usuarioStatus.status or vm.addUsuario)">
+					<listcell label="@load(each.usuario.nombreCompleto)" />
+					<listcell label="@load(each.usuario.usuario)" />
+					<listcell>
+						<textbox value="@load(each.usuario.contrasena)" type="password" style="background-color:transparent; border:none" focus="false" readonly="true" />
+					</listcell>
+					<listcell>
+						<button
+							onClick="@command('delete', each = each.usuario)"
+							style="background-color: red" iconSclass="z-icon-times"
+							disabled="@load(vm.addUsuario or vm.usuarioStatus.status)" />
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+		
+		<grid>
+			<auxhead>
+				<auxheader colspan="4" class="topic">
+					Editar Usuario
+				</auxheader>
+			</auxhead>
+			<columns>
+				<column label="Nombre" align="center" />
+				<column label="Usuario" align="center" />
+				<column label="Contraseña" align="center" />
+				<column />
+			</columns>
+			<rows>
+				<row visible="@load(vm.usuarioStatus.status)">
+					<textbox
+						value="@load(vm.usuarioStatus.usuario.nombreCompleto) @save(vm.usuarioStatus.usuario.nombreCompleto, before='confirm')" width="" />
+					<textbox
+						value="@load(vm.usuarioStatus.usuario.usuario) @save(vm.usuarioStatus.usuario.usuario, before='confirm')" width="" />
+					<textbox type="password" style="background-color:transparent; border:none" focus="false" readonly="true"
+						value="@load(vm.usuarioStatus.usuario.contrasena) @save(vm.usuarioStatus.usuario.contrasena, before='confirm')" width="" />
+					<div>
+						<button iconSclass="z-icon-save"
+							style="background-color: green"
+							onClick="@command('confirm', usuarioStatus=vm.usuarioStatus)"
+							visible="@load(vm.usuarioStatus.status)" />
+						<button iconSclass="z-icon-times"
+							style="background-color: blue"
+							onClick="@command('changeEditableStatus', usuarioStatus=vm.usuarioStatus)"
+							visible="@load(vm.usuarioStatus.status)" />
+					</div>
+				</row>
+				<row visible="@load(!vm.usuarioStatus.status)">
+					<label value="@load(vm.usuarioStatus.usuario.nombreCompleto)" />
+					<label value="@load(vm.usuarioStatus.usuario.usuario)" />
+					<textbox value="@load(vm.usuarioStatus.usuario.contrasena)" type="password" style="background-color:transparent; border:none" focus="false" readonly="true" />
+					<div>
+						<button iconSclass="z-icon-pencil"
+							onClick="@command('changeEditableStatus', usuarioStatus=vm.usuarioStatus)"
+							visible="@load(!vm.listAux.isEmpty() and (vm.usuarioStatus.usuario ne null))" 
+							disabled="@load(vm.usuarioStatus.status or vm.addUsuario)" />
+					</div>
+				</row>
+			</rows>
+						
+		</grid>
+		
+	</window>
+</zk>

@@ -40,6 +40,7 @@ public class Registro implements Serializable {
 	private Usuarios usuario;
 
 	public Registro() {
+		/** CONSTRUCTOR POR DEFECTO **/
 	}
 
 	public int getIdRegistro() {

@@ -1,0 +1,6 @@
+projectKey=mx.com.felicia:libro_diario
+serverUrl=http://localhost:9000
+serverVersion=7.6.0.21501
+dashboardUrl=http://localhost:9000/dashboard?id=mx.com.felicia%3Alibro_diario
+ceTaskId=AXSORao82TNQD6sRfDT7
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXSORao82TNQD6sRfDT7

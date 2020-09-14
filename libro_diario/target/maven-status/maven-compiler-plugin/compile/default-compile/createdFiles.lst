@@ -1,0 +1,12 @@
+mx\com\felicia\libro_diario\controllers\UsuariosVM.class
+mx\com\felicia\libro_diario\dal\models\Empresas.class
+mx\com\felicia\libro_diario\dal\models\Operacion.class
+mx\com\felicia\libro_diario\config\FchLegalConfiguration.class
+mx\com\felicia\libro_diario\controllers\UsuariosVM$1.class
+mx\com\felicia\libro_diario\dal\models\Usuarios.class
+mx\com\felicia\libro_diario\dal\models\Registro.class
+mx\com\felicia\libro_diario\config\FloreteWebInitializer.class
+mx\com\felicia\libro_diario\controllers\EmpresasVM.class
+mx\com\felicia\libro_diario\dal\repositories\EmpresasRepository.class
+mx\com\felicia\libro_diario\controllers\UsuarioStatus.class
+mx\com\felicia\libro_diario\dal\repositories\UsuariosRepository.class

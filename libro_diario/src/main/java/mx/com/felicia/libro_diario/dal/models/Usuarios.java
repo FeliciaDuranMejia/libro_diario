@@ -27,6 +27,7 @@ public class Usuarios implements Serializable {
 	private String usuario;
 
 	public Usuarios() {
+		/** CONSTRUCTOR POR DEFECTO **/
 	}
 
 	public int getIdUsuario() {

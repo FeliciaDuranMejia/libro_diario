@@ -1,9 +1,5 @@
 package mx.com.felicia.libro_diario.config;
 
-import java.util.EnumSet;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -13,8 +9,6 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.filter.DelegatingFilterProxy;
-//import org.zkoss.web.servlet.dsp.InterpreterServlet;
 import org.zkoss.zk.au.http.DHtmlUpdateServlet;
 import org.zkoss.zk.ui.http.DHtmlLayoutServlet;
 import org.zkoss.zk.ui.http.HttpSessionListener;
@@ -27,7 +21,6 @@ public class FloreteWebInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {      
 		registerListener(servletContext);	
 		registerDispatcherServlet(servletContext);
-		//registerSpringSecurityFilterChain(servletContext);
 		registerCxfServlet(servletContext);
     }
 	
@@ -53,20 +46,12 @@ public class FloreteWebInitializer implements WebApplicationInitializer {
 				"auEngine", new DHtmlUpdateServlet());
 		dispatcher.addMapping("/zkau/*");
 		
-//		dispatcher = servletContext.addServlet(
-//				"dspLoader", new InterpreterServlet());
 		dispatcher.setInitParameter("class-resource", "true");
 		dispatcher.addMapping("*.dsp");
 		
 		
 	}
-	
-//	private void registerSpringSecurityFilterChain(ServletContext servletContext) {
-//		DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy("springSecurityFilterChain");
-//		FilterRegistration fr = servletContext.addFilter("securityFilter", delegatingFilterProxy);
-//		fr.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD), true, "/*");
-//	}
-	
+
 	private void registerCxfServlet(ServletContext servletContext){
 		ServletRegistration.Dynamic dispatcher 
 		  = servletContext.addServlet("dispatcher", new CXFServlet());

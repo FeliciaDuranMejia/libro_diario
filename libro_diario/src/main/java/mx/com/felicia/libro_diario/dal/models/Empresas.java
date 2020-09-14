@@ -24,6 +24,7 @@ public class Empresas implements Serializable {
 	private String telefono;
 
 	public Empresas() {
+		/** CONSTRUCTOR POR DEFECTO **/
 	}
 
 	public int getIdEmpresa() {

@@ -11,7 +11,7 @@
 			New User
 		</button>
 		<hbox visible="@load(vm.addUsuario)">
-			<textbox placeholder="Nombre Completo"
+			<textbox placeholder="Nombre Completo" constraint="no empty"
 				value="@bind(vm.currentUsuarios.nombreCompleto)">
 			</textbox>
 			<textbox placeholder="Usuario"
